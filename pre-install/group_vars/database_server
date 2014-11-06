@@ -1,0 +1,3 @@
+# Value can be either postgres or mysql 
+# For now, it only works with postgres
+database: postgres 
