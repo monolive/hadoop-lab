@@ -1,0 +1,12 @@
+---   
+  - name: copy initrd.img
+    copy: src=initrd.img dest=/boot/initrd.img
+    
+  - name: copy vmlinuz
+    copy: src=vmlinuz dest=/boot/vmlinuz
+
+  - name: copy grub.conf
+    copy: src=grub.conf dest=/boot/grub/grub.conf
+
+  - name: reboot host
+    command: reboot
