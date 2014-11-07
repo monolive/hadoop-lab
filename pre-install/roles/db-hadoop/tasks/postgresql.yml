@@ -1,0 +1,24 @@
+---    
+  - name: Install postgres
+    yum: name={{ item }} state=present
+    with_items: 
+      - postgresql-server
+      - python-psycopg2
+
+  - name: create hive DB
+    postgresql_db: name={{ hive_database }} state=present
+
+  - name: create oozie DB
+    postgresql_db: name={{ oozie_database }} state=present
+
+  - name: create Ambari DB 
+    postgresql_db: name={{ ambari_database }} state=present
+
+  - name: add hive user to postgres
+    postgresql_user: db={{ hive_database }}  name={{ hive_username }} password={{ hive_password }} state=present
+
+  - name: add oozie user to postgres
+    postgresql_user: db={{ oozie_database }} name={{ oozie_username }}  password={{ oozie_password }} state=present
+
+  - name: add ambari user to postgres
+    postgresql_user: db={{ ambari_database }} name={{ ambari_user }} password={{ ambari_password }} state=present
