@@ -1,9 +1,11 @@
-- hosts: ambari
-  user: root
-  roles:
-    ambari-server
-
+---
 - hosts: database_server
   user: root
   roles:
-    db-hadoop
+    - db-hadoop
+
+- hosts: ambari_server
+  user: root
+  roles:
+    - ambari-server
+

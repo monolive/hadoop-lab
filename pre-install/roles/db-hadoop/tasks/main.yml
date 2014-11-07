@@ -1,15 +1,3 @@
----    
-  - name: Install postgres
-    yum: name=postgresql-server state=present
-
-  - name: create hive DB on postgres server
-    postgresql_db: name=hive state=present
-
-  - name: create oozie DB on postgres server
-    postgresql_db: name=oozie state=present
-
-  - name: add hive user to postgres
-    postgresql_user: db=hive name=hive password=hive state=present
-
-  - name: add oozie user to postgres
-    postgresql_user: db=oozie name=oozie password=oozie state=present
+---
+- include: postgresql.yml
+  when: database_server = postgresql
