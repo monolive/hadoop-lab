@@ -1,6 +1,6 @@
 # Value can be either postgresql or mysql 
 # For now, it only works with postgresql
-database: postgresql
+hadoop_database: postgresql
 hive_database: hive
 hive_username: hive
 hive_password: hive
@@ -8,5 +8,6 @@ oozie_database: oozie
 oozie_username: oozie
 oozie_password: oozie
 ambari_database: ambari
+ambari_schema: ambari
 ambari_username: ambari
 ambari_password: ambari

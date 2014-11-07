@@ -1,3 +1,4 @@
 ---
-- include: postgresql.yml
-  when: database_server = postgresql
+- name: Include the correct DB file
+  include: postgresql.yml
+  when: hadoop_database == "postgresql"

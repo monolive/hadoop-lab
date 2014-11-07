@@ -3,7 +3,24 @@
     get_url: url={{ ambari_repo }} dest=/etc/yum.repos.d/ambari.repo
 
   - name: install ambari
-    yum: name=ambari-server state=present
+    yum: name=ambari-server state=present disable_gpg_check=true
+    register: ambari_installed
 
   - name: configure ambari-server
     command: /usr/sbin/ambari-server setup -s
+# remote DB -- doens't work
+#    command: /usr/sbin/ambari-server setup -s --database=postgres --databasehost={{ hostvars[groups['database_server'][0]]['ansible_fqdn'] }} --databaseport=5432 --databasename={{ ambari_database }} --databaseusername={{ ambari_username }} --databasepassword={{ ambari_password }}
+    when: ambari_installed|changed
+
+  - name: install postgres JDBC
+    yum: name=postgresql-jdbc state=present
+    when: hadoop_database == "postgresql"
+    register: postgresql_jdbc
+
+  - name: Configure JDBC for ambari
+    command: /usr/sbin/ambari-server setup --jdbc-db=postgres --jdbc-driver=/usr/share/java/postgresql-jdbc.jar 
+    when: hadoop_database == "postgresql" and postgresql_jdbc|changed
+
+  - name: start ambari-server
+    command: /usr/sbin/ambari-server start
+    when: ambari_installed|changed

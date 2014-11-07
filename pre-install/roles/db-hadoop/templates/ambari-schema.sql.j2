@@ -1,0 +1,4 @@
+CREATE SCHEMA {{ ambari_schema }} AUTHORIZATION {{ ambari_username }};
+ALTER SCHEMA {{ ambari_schema }} OWNER TO {{ ambari_username }};
+ALTER ROLE {{ ambari_username }} SET search_path to ‘{{ ambari_schema }}' 'public';
+

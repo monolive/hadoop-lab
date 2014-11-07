@@ -1,24 +1,91 @@
 ---    
+# Commenting out ambari components as using embedded - remote doesn;t work 
   - name: Install postgres
     yum: name={{ item }} state=present
     with_items: 
       - postgresql-server
       - python-psycopg2
 
+  - name: initdb postgres
+    shell: creates=/var/lib/pgsql/data/pg_hba.conf service postgresql initdb
+
+  - name: copy pg_hba.conf
+    copy: src=pg_hba.conf dest=/var/lib/pgsql/data/pg_hba.conf
+
+  - name: start postgres
+    service: name=postgresql state=started enabled=yes
+
   - name: create hive DB
     postgresql_db: name={{ hive_database }} state=present
+    sudo: yes
+    sudo_user: postgres
 
   - name: create oozie DB
     postgresql_db: name={{ oozie_database }} state=present
+    sudo: yes
+    sudo_user: postgres
 
-  - name: create Ambari DB 
-    postgresql_db: name={{ ambari_database }} state=present
+#  - name: create Ambari DB 
+#    postgresql_db: name={{ ambari_database }} state=present
+#    sudo: yes
+#    sudo_user: postgres
 
   - name: add hive user to postgres
     postgresql_user: db={{ hive_database }}  name={{ hive_username }} password={{ hive_password }} state=present
+    sudo: yes
+    sudo_user: postgres
 
   - name: add oozie user to postgres
     postgresql_user: db={{ oozie_database }} name={{ oozie_username }}  password={{ oozie_password }} state=present
+    sudo: yes
+    sudo_user: postgres
 
-  - name: add ambari user to postgres
-    postgresql_user: db={{ ambari_database }} name={{ ambari_user }} password={{ ambari_password }} state=present
+#  - name: add ambari user to postgres
+#    postgresql_user: db={{ ambari_database }} name={{ ambari_username }} password={{ ambari_password }} state=present
+#    sudo: yes
+#    sudo_user: postgres
+
+#  - name: grant permission on ambari DB for user ambari
+#    postgresql_privs: db={{ ambari_database }} privs=ALL role={{ ambari_username}} type=database
+#    sudo: yes
+#    sudo_user: postgres
+
+  - name: grant permission on hive DB for user hive
+    postgresql_privs: db={{ hive_database }} privs=ALL role={{ hive_username}} type=database
+    sudo: yes
+    sudo_user: postgres
+
+  - name: grant permission on oozie DB for user oozie
+    postgresql_privs: db={{ oozie_database }} privs=ALL role={{ oozie_username}} type=database
+    sudo: yes
+    sudo_user: postgres
+
+  - name: copy hive DDL
+    copy: src=hive-schema-0.13.0.postgres.sql dest=/var/lib/pgsql/data/hive-schema-0.13.0.postgres.sql
+    register: hive_ddl
+
+  - name: create hive table
+    command: psql -d {{ hive_database }} -f /var/lib/pgsql/data/hive-schema-0.13.0.postgres.sql
+    when: hive_ddl|changed
+    sudo: yes
+    sudo_user: postgres
+
+#  - name: copy schema DDL creation
+#    template: src=ambari-schema.sql.j2 dest=/var/lib/pgsql/data/ambari-schema.sql
+#    register: schema_ddl
+
+#  - name: Create ambari schema
+#    command: psql -d {{ ambari_database }} -f /var/lib/pgsql/data/ambari-schema.sql
+#    when: schema_ddl|changed
+#    sudo: yes
+#    sudo_user: postgres
+
+#  - name: copy ambari DDL
+#    copy: src=Ambari-DDL-Postgres-CREATE.sql dest=/var/lib/pgsql/data/Ambari-DDL-Postgres-CREATE.sql 
+#    register: ambari_ddl
+
+#  - name: Create ambari table
+#    command: psql -d {{ ambari_database }} -f /var/lib/pgsql/data/Ambari-DDL-Postgres-CREATE.sql
+#    when: ambari_ddl|changed
+#    sudo: yes
+#    sudo_user: postgres

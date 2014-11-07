@@ -1,7 +1,4 @@
-[cto]
-server[1-9].ctolab.hortonworks.com
-
-[ambari]
+[ambari_server]
 server1.ctolab.hortonworks.com
 
 [database_server]
