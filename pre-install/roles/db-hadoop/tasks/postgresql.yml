@@ -60,15 +60,15 @@
     sudo: yes
     sudo_user: postgres
 
-  - name: copy hive DDL
-    copy: src=hive-schema-0.13.0.postgres.sql dest=/var/lib/pgsql/data/hive-schema-0.13.0.postgres.sql
-    register: hive_ddl
+#  - name: copy hive DDL
+#    copy: src=hive-schema-0.13.0.postgres.sql dest=/var/lib/pgsql/data/hive-schema-0.13.0.postgres.sql
+#    register: hive_ddl
 
-  - name: create hive table
-    command: psql -d {{ hive_database }} -f /var/lib/pgsql/data/hive-schema-0.13.0.postgres.sql
-    when: hive_ddl|changed
-    sudo: yes
-    sudo_user: postgres
+#  - name: create hive table
+#    command: psql -d {{ hive_database }} -f /var/lib/pgsql/data/hive-schema-0.13.0.postgres.sql
+#    when: hive_ddl|changed
+#    sudo: yes
+#    sudo_user: postgres
 
 #  - name: copy schema DDL creation
 #    template: src=ambari-schema.sql.j2 dest=/var/lib/pgsql/data/ambari-schema.sql
