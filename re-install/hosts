@@ -1,2 +1,2 @@
 [cto]
-server[1-9].ctolab.hortonworks.com
+server[1:9].ctolab.hortonworks.com
