@@ -1,4 +1,10 @@
 ---
+- hosts: nodes
+  user: root
+  roles:
+    - ntp
+    - pre-requisites
+
 - hosts: database_server
   user: root
   roles:
@@ -8,4 +14,3 @@
   user: root
   roles:
     - ambari-server
-
