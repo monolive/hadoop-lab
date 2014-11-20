@@ -4,6 +4,7 @@
   roles:
     - ntp
     - pre-requisites
+    - user-creations
 
 - hosts: database_server
   user: root
