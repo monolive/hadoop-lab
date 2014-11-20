@@ -1,0 +1,5 @@
+- name: restart ntp
+  service: name=ntpd state=restarted
+
+- name: force sync
+  command: /usr/sbin/ntpdate -u {{ ntp_server }}
