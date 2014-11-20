@@ -1,0 +1,4 @@
+---
+# Install and configure openssl
+  - name : update openssl
+    yum : name=openssl state=latest
