@@ -4,6 +4,7 @@
   roles:
     - ntp
     - pre-requisites
+    - ambari-agent
 
 - hosts: database_server
   user: root
