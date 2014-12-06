@@ -1,0 +1,14 @@
+---
+  - name: add ambari-repo
+    get_url: url={{ ambari_repo }} dest=/etc/yum.repos.d/ambari.repo
+
+  - name: install ambari
+    yum: name=ambari-agent state=present disable_gpg_check=true
+    register: ambari_agent_installed
+
+  - Add ambari server in conf file
+    lineinfile: dest=/etc/ambari-agent/conf/ambari-agent.ini regexp=^hostname= line=hostname={{ hostvars['ambari_server']['ansible_fqdn'] }}
+
+  - name: start ambari-agent
+    command: /usr/sbin/ambari-agent restart
+    when: ambari_agent_installed|changed
