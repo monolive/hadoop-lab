@@ -1,2 +1,2 @@
-ntp_server: 10.22.0.5
+ntp_server: time.apple.com
 ambari_repo: http://public-repo-1.hortonworks.com/ambari/centos6/1.x/updates/1.7.0/ambari.repo

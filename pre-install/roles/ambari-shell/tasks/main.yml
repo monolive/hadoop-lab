@@ -1,0 +1,3 @@
+---
+  - name: copy ambari-shell
+    copy: src=ambari-shell-1.6.0-SNAPSHOT.jar dest=/var/lib/ambari-server/resources/scripts/ambari-shell-1.6.0-SNAPSHOT.jar

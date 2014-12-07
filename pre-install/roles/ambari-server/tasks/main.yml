@@ -22,5 +22,4 @@
     when: hadoop_database == "postgresql" and postgresql_jdbc|changed
 
   - name: start ambari-server
-    command: /usr/sbin/ambari-server start
-    when: ambari_installed|changed
+    service: name=ambari-server state=started enabled=yes
