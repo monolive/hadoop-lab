@@ -3,10 +3,10 @@
     copy: src=ambari-shell-1.6.0-SNAPSHOT.jar dest=/var/lib/ambari-server/resources/scripts/ambari-shell-1.6.0-SNAPSHOT.jar
 
   - name: copy blueprints
-    copy: src=multi-node-hdfs-yarn.json dest=/var/lib/ambari-server/resources/scripts/multi-node-hdfs-yarn.json
+    template: src=multi-node-hdfs-yarn.json.j2 dest=/var/lib/ambari-server/resources/scripts/multi-node-hdfs-yarn.json
 
   - name: copy install-cluster.sh
-    template: src=install-cluster.sh.j2 dest=/var/lib/ambari-server/resources/scripts/install-cluster.sh
+    template: src=install-cluster.sh.j2 dest=/var/lib/ambari-server/resources/scripts/install-cluster.sh mode=755
 
   - name: launch installation
     command: /var/lib/ambari-server/resources/scripts/install-cluster.sh

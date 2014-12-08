@@ -20,7 +20,7 @@ dfs_namenode_name_dir : /mnt/resource/hdfs/namenode
 yarn_nodemanager_local_dirs : /mnt/resource/yarn/local
 yarn_nodemanager_log_dirs : /var/log/hadoop/yarn
 yarn_log_dir_prefix : /var/log/hadoop/yarn
-hbase_log_dir : /var/log/hadoo/hbase
+hbase_log_dir : /var/log/hadoop/hbase
 hbase_tmp_dir : /mnt/resource/hbase
 hcat_log_dir : /var/log/hadoop/hcat
 hdfs_log_dir_prefix : /var/log/hadoop/hdfs
