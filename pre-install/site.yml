@@ -2,6 +2,9 @@
 - hosts: all
   user: azureuser
   sudo: yes
+  vars:
+    - vars/users
+    - vars/hdp_info
   roles:
     - ntp
     - pre-requisites
