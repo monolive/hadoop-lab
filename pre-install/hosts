@@ -1,10 +1,10 @@
 [ambari_server]
-c2n1.c2n1.f5.internal.cloudapp.net
+c1n1.c1n1.f3.internal.cloudapp.net
 
 [database_server]
-c2n1.c2n1.f5.internal.cloudapp.net
+c1n1.c1n1.f3.internal.cloudapp.net
 
 [nodes]
-c2n1.c2n1.f5.internal.cloudapp.net
-c2n2.c2n2.f3.internal.cloudapp.net
-c2n3.c2n3.f5.internal.cloudapp.net
+c1n1.c1n1.f3.internal.cloudapp.net
+c1n2.c1n2.f1.internal.cloudapp.net
+c1n3.c1n3.f5.internal.cloudapp.net
