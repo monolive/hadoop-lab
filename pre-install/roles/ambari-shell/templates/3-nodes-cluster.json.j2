@@ -1,0 +1,97 @@
+{
+	"configurations": [
+    	{
+      		"nagios-env": {
+        		"nagios_contact": "admin@localhost"
+      		}
+    	},
+        {
+            "hdfs-site" : {
+                "dfs.datanode.data.dir":"{{ dfs_datanode_data_dir }}",
+                "dfs.namenode.checkpoint.dir":"{{ dfs_namenode_checkpoint_dir }}",
+                "dfs.namenode.name.dir":"{{ dfs_namenode_name_dir }}",
+                "dfs.datanode.data.dir.perm":"700"
+            }
+        },
+        {
+            "yarn-site" : {
+                "yarn.nodemanager.local-dirs":"{{ yarn_nodemanager_local_dirs }}",
+                "yarn.nodemanager.log-aggregation.compression-type":"gz",
+                "yarn.nodemanager.log-dirs":"{{ yarn_nodemanager_log_dirs }}"
+            }
+        }
+  	],
+  "host_groups": [
+    {
+      "name": "master",
+      "components": [
+        {
+          "name": "NAMENODE"
+        },
+        {
+          "name": "SECONDARY_NAMENODE"
+        },
+        {
+          "name": "RESOURCEMANAGER"
+        },
+        {
+          "name": "HISTORYSERVER"
+        },
+        {
+          "name": "NAGIOS_SERVER"
+        },
+        {
+          "name": "GANGLIA_SERVER"
+        },
+        {
+          "name": "APP_TIMELINE_SERVER"
+        },
+        {
+          "name": "ZOOKEEPER_SERVER"
+        },
+        {
+          "name": "DATANODE"
+        },
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "GANGLIA_MONITOR"
+        },
+        {
+          "name": "ZOOKEEPER_CLIENT"
+        },
+        {
+          "name": "HDFS_CLIENT"
+        },
+        {
+          "name": "YARN_CLIENT"
+        },
+        {
+          "name": "MAPREDUCE2_CLIENT"
+        }
+      ],
+      "cardinality": "1"
+    },
+    {
+      "name": "slave_1",
+      "components": [
+        {
+          "name": "DATANODE"
+        },
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "GANGLIA_MONITOR"
+        }
+      ],
+      "cardinality": "2"
+    }
+  ],
+  "Blueprints": {
+    "blueprint_name": "multi-node-hdfs-yarn",
+    "stack_name": "HDP",
+    "stack_version": "{{ HDP_VERSION }}"
+  }
+}
