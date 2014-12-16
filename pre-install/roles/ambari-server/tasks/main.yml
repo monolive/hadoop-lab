@@ -26,6 +26,7 @@
     poll: 5
 
   - name: start ambari-server
-    service: name=ambari-server state=started enabled=yes
+    #service: name=ambari-server state=started enabled=yes
+    command: /usr/sbin/ambari-server restart
     async: 45
     poll: 5
