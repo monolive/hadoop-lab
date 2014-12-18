@@ -23,28 +23,13 @@
   	],
   "host_groups": [
     {
-      "name": "master",
+      "name": "node1",
       "components": [
-        {
-          "name": "NAMENODE"
-        },
-        {
-          "name": "SECONDARY_NAMENODE"
-        },
-        {
-          "name": "RESOURCEMANAGER"
-        },
-        {
-          "name": "HISTORYSERVER"
-        },
         {
           "name": "NAGIOS_SERVER"
         },
         {
           "name": "GANGLIA_SERVER"
-        },
-        {
-          "name": "APP_TIMELINE_SERVER"
         },
         {
           "name": "ZOOKEEPER_SERVER"
@@ -74,8 +59,20 @@
       "cardinality": "1"
     },
     {
-      "name": "slave_1",
+      "name": "node2",
       "components": [
+        {
+          "name": "NAMENODE"
+        },
+        {
+          "name": "RESOURCEMANAGER"
+        },
+        {
+          "name": "HISTORYSERVER"
+        },
+        {
+          "name": "ZOOKEEPER_SERVER"
+        },
         {
           "name": "DATANODE"
         },
@@ -87,6 +84,30 @@
         }
       ],
       "cardinality": "2"
+    },
+    {
+      "name": "node3",
+      "components": [
+        {
+          "name": "SECONDARY_NAMENODE"
+        },
+        {
+          "name": "APP_TIMELINE_SERVER"
+        },
+        {
+          "name": "ZOOKEEPER_SERVER"
+        },
+        {
+          "name": "DATANODE"
+        },
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "GANGLIA_MONITOR"
+        }
+      ],
+      "cardinality": "3"
     }
   ],
   "Blueprints": {
