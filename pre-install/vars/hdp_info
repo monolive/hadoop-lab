@@ -13,6 +13,14 @@ CLUSTERNAME : hortonworks
 # Database type mysql or postgresql
 db_type : postgresql
 
+# Oozie
+hive_username : hive
+hive_password : hive
+
+# Oozie
+oozie_username : oozie
+oozie_password : oozie
+
 # Mount points, comma separated list
 dfs_datanode_data_dir : /mnt/resource/hdfs/data
 dfs_namenode_checkpoint_dir : /mnt/resource/hdfs/namesecondary
@@ -30,3 +38,6 @@ oozie_data_dir : /mnt/resource/oozie
 oozie_log_dir : /var/log/hadoop/oozie
 zk_data_dir : /mnt/resource/zookeeper
 zk_log_dir : /var/log/hadoop/zookeeper
+oozie_data_dir : /mnt/resource/oozie
+
+hadoop_pid_dir : /var/run/hadoop

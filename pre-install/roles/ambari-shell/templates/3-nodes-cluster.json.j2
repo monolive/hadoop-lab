@@ -14,10 +14,60 @@
             }
         },
         {
+            "hadoop-env" : {
+                "hdfs_log_dir_prefix" : "{{ hdfs_log_dir_prefix }}",
+                "hadoop_pid_dir_prefix": "{{ hadoop_pid_dir }}"
+            }
+        },
+        {
             "yarn-site" : {
                 "yarn.nodemanager.local-dirs":"{{ yarn_nodemanager_local_dirs }}",
                 "yarn.nodemanager.log-aggregation.compression-type":"gz",
                 "yarn.nodemanager.log-dirs":"{{ yarn_nodemanager_log_dirs }}"
+            }
+        },
+        {
+            "yarn-env" : {
+                "yarn_log_dir_prefix" : "{{ yarn_log_dir_prefix }}",
+                "yarn_pid_dir_prefix": "{{ hadoop_pid_dir }}"
+            }
+        },
+        {
+            "oozie-site": {
+                "oozie.service.JPAService.create.db.schema" : "true",
+                "oozie.service.JPAService.jdbc.driver" : "org.postgresql.Driver",
+                "oozie.service.JPAService.jdbc.username" : "{{ oozie_username }}",
+                "oozie.service.JPAService.jdbc.password" : "{{ oozie_password }}",
+                "oozie.db.schema.name" : "oozie"
+            }
+        },
+        {
+            "oozie-env" : {
+                "oozie_data_dir" : "{{ oozie_data_dir }}",
+                "oozie_database" : "Existing PostgreSQL Database",
+                "oozie_existing_postgresql_database" : "PostgreSQL",
+                "oozie_existing_postgresql_host": ""
+                "oozie_pid_dir": "{{ hadoop_pid_dir }}"
+            }
+        },
+        {
+            "hive-site" : {
+                "javax.jdo.option.ConnectionDriverName" : "org.postgresql.Driver",
+                "javax.jdo.option.ConnectionPassword" : "hive",
+                "javax.jdo.option.ConnectionURL" : "jdbc:postgresql://:5432/hive",
+                "javax.jdo.option.ConnectionUserName" : "hive"
+            }
+        },
+        {
+            "hive-env" : {
+                "hcat_log_dir" : "{{ hcat_log_dir }}",
+                "hcat_pid_dir" : "{{ hadoop_pid_dir}}",
+                "hive_log_dir" : "{{ hive_log_dir }}",
+                "hive_pid_dir" : "{{ hadoop_pid_dir}}",
+                "hive_database" : "Existing PostgreSQL Database",
+                "hive_database_name" : "hive",
+                "hive_database_type" : "postgres",
+                "hive_existing_postgresql_database" : "PostgreSQL"
             }
         }
   	],
