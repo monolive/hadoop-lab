@@ -68,6 +68,9 @@
           "name": "NODEMANAGER"
         },
         {
+          "name": "SQOOP"
+        },
+        {
           "name": "GANGLIA_MONITOR"
         }
       ],
@@ -77,6 +80,6 @@
   "Blueprints": {
     "blueprint_name": "multi-node-hdfs-yarn",
     "stack_name": "HDP",
-    "stack_version": "2.2"
+    "stack_version": "2.1"
   }
 }
