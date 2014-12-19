@@ -11,8 +11,8 @@
 # remote DB -- doens't work
 #    command: /usr/sbin/ambari-server setup -s --database=postgres --databasehost={{ hostvars[groups['database_server'][0]]['ansible_fqdn'] }} --databaseport=5432 --databasename={{ ambari_database }} --databaseusername={{ ambari_username }} --databasepassword={{ ambari_password }}
     when: ambari_installed|changed
-    async: 45
-    poll: 5
+#    async: 45
+#    poll: 5
 
   - name: install postgres JDBC
     yum: name=postgresql-jdbc state=present
