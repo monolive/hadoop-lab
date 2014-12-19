@@ -1,0 +1,7 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+
+10.0.2.12 c2n1.c2n1.f5.internal.cloudapp.net c2n1
+10.0.2.13 c2n2.c2n2.f3.internal.cloudapp.net c2n2
+10.0.2.14 c2n3.c2n3.f5.internal.cloudapp.net c2n3

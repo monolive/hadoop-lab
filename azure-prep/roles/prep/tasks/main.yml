@@ -1,0 +1,15 @@
+---
+  - name: install libselinux-python
+    yum: name=libselinux-python state=present
+  - name: copy hosts
+    copy: src=hosts dest=/etc/hosts
+  - name: switch off selinux
+    shell: setenforce 0 
+  - name: switch off selinux
+    shell: setenforce 0 
+  - name: copy epel.repo
+    copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
+  - name: isntall ansible
+    yum: name=ansible state=present
+  - name: isntall git
+    yum: name=git state=present
