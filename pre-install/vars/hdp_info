@@ -3,41 +3,29 @@
 # Cluster def and config
 #
 default_password : hadoop
-# Cluster version, should be of the form : 1.3.3 or 2.0.6
-HDP_VERSION : 2.1
+# Cluster version, should be of the form : 1.3.3 or 2.1.6
+HDP_VERSION : 2.2
 
 # Cluster Name
 CLUSTERNAME : hortonworks
 
-
-# Database type mysql or postgresql
-db_type : postgresql
-
-# Oozie
-hive_username : hive
-hive_password : hive
-
-# Oozie
-oozie_username : oozie
-oozie_password : oozie
-
 # Mount points, comma separated list
-dfs_datanode_data_dir : /mnt/resource/hdfs/data
-dfs_namenode_checkpoint_dir : /mnt/resource/hdfs/namesecondary
-dfs_namenode_name_dir : /mnt/resource/hdfs/namenode
-hdfs_log_dir_prefix : /var/log/hadoop/hdfs
-yarn_nodemanager_local_dirs : /mnt/resource/yarn/local
-yarn_nodemanager_log_dirs : /var/log/hadoop/yarn
-yarn_log_dir_prefix : /var/log/hadoop/yarn
-hbase_log_dir : /var/log/hadoop/hbase
-hbase_tmp_dir : /mnt/resource/hbase
-hcat_log_dir : /var/log/hadoop/hcat
-mapred_log_dir_prefix : /var/log/hadoop/mapred
-hive_log_dir : /var/log/hadoop/hive
-oozie_data_dir : /mnt/resource/oozie
-oozie_log_dir : /var/log/hadoop/oozie
-zk_data_dir : /mnt/resource/zookeeper
-zk_log_dir : /var/log/hadoop/zookeeper
-oozie_data_dir : /mnt/resource/oozie
+dfs_datanode_data_dir : /grid/1/hdfs/data,/grid/2/hdfs/data,/grid/3/hdfs/data,/grid/4/hdfs/data,/grid/5/hdfs/data
+dfs_namenode_checkpoint_dir : /grid/1/hdfs/namesecondary
+dfs_namenode_name_dir : /grid/1/hdfs/namenode
+hdfs_log_dir_prefix : /hadoop/log/hdfs
+yarn_nodemanager_local_dirs : /grid/1/yarn/local
+yarn_nodemanager_log_dirs : /hadoop/log/yarn
+yarn_log_dir_prefix : /hadoop/log/yarn
+hbase_log_dir : /hadoop/log/hbase
+hbase_tmp_dir : /grid/1/hbase
+hcat_log_dir : /hadoop/log/hcat
+mapred_log_dir_prefix : /hadoop/log/mapred
+hive_log_dir : /hadoop/log/hive
+oozie_data_dir : /grid/1/oozie
+oozie_log_dir : /hadoop/log/oozie
+zk_data_dir : /grid/1/zookeeper
+zk_log_dir : /hadoop/log/zookeeper
+oozie_data_dir : /grid/1/oozie
 
 hadoop_pid_dir : /var/run/hadoop

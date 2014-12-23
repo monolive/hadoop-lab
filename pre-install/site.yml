@@ -1,7 +1,7 @@
 ---
 - hosts: all
-  user: azureuser
-  sudo: yes
+#  user: azureuser
+#  sudo: yes
   vars_files:
     - vars/users
     - vars/hdp_info
@@ -12,14 +12,14 @@
     - ambari-agent
 
 - hosts: database_server
-  user: azureuser
-  sudo: yes
+#  user: azureuser
+#  sudo: yes
   roles:
     - db-hadoop
 
 - hosts: ambari_server
-  user: azureuser
-  sudo: yes
+#  user: azureuser
+#  sudo: yes
   vars_files:
     - vars/hdp_info
   roles:
