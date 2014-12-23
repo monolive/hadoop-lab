@@ -46,7 +46,9 @@
                 "oozie_data_dir" : "{{ oozie_data_dir }}",
                 "oozie_database" : "Existing PostgreSQL Database",
                 "oozie_existing_postgresql_database" : "PostgreSQL",
-                "oozie_existing_postgresql_host": "c2n1.c2n1.f5.internal.cloudapp.net",
+                {% for host in groups['database_server'] %}
+                "oozie_existing_postgresql_host": "{{ hostvars[host]['ansible_fqdn'] }}",
+                {% endfor %}
                 "oozie_pid_dir": "{{ hadoop_pid_dir }}"
             }
         },
