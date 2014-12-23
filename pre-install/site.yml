@@ -1,17 +1,27 @@
 ---
-- hosts: nodes
-  user: root
+- hosts: all
+  user: azureuser
+  sudo: yes
+  vars_files:
+    - vars/users
+    - vars/hdp_info
   roles:
     - ntp
     - pre-requisites
-    - user-creations
+    - users
+    - ambari-agent
 
 - hosts: database_server
-  user: root
+  user: azureuser
+  sudo: yes
   roles:
     - db-hadoop
 
 - hosts: ambari_server
-  user: root
+  user: azureuser
+  sudo: yes
+  vars_files:
+    - vars/hdp_info
   roles:
     - ambari-server
+    - ambari-shell

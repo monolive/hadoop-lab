@@ -1,0 +1,6 @@
+---
+- hosts: all
+  user: azureuser
+  sudo: yes
+  roles:
+    - prep

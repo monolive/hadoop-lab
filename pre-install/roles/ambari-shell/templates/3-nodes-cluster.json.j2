@@ -1,0 +1,252 @@
+{
+	"configurations": [
+    	{
+      		"nagios-env": {
+        		"nagios_contact": "admin@localhost.com"
+      		}
+    	},
+        {
+            "hdfs-site" : {
+                "dfs.datanode.data.dir":"{{ dfs_datanode_data_dir }}",
+                "dfs.namenode.checkpoint.dir":"{{ dfs_namenode_checkpoint_dir }}",
+                "dfs.namenode.name.dir":"{{ dfs_namenode_name_dir }}",
+                "dfs.datanode.data.dir.perm":"700"
+            }
+        },
+        {
+            "hadoop-env" : {
+                "hdfs_log_dir_prefix" : "{{ hdfs_log_dir_prefix }}",
+                "hadoop_pid_dir_prefix": "{{ hadoop_pid_dir }}"
+            }
+        },
+        {
+            "yarn-site" : {
+                "yarn.nodemanager.local-dirs":"{{ yarn_nodemanager_local_dirs }}",
+                "yarn.nodemanager.log-aggregation.compression-type":"gz",
+                "yarn.nodemanager.log-dirs":"{{ yarn_nodemanager_log_dirs }}"
+            }
+        },
+        {
+            "yarn-env" : {
+                "yarn_log_dir_prefix" : "{{ yarn_log_dir_prefix }}",
+                "yarn_pid_dir_prefix": "{{ hadoop_pid_dir }}"
+            }
+        },
+        {
+            "oozie-site": {
+                "oozie.service.JPAService.create.db.schema" : "true",
+                "oozie.service.JPAService.jdbc.driver" : "org.postgresql.Driver",
+                "oozie.service.JPAService.jdbc.username" : "{{ oozie_username }}",
+                "oozie.service.JPAService.jdbc.password" : "{{ oozie_password }}",
+                "oozie.db.schema.name" : "oozie"
+            }
+        },
+        {
+            "oozie-env" : {
+                "oozie_data_dir" : "{{ oozie_data_dir }}",
+                "oozie_database" : "Existing PostgreSQL Database",
+                "oozie_existing_postgresql_database" : "PostgreSQL",
+                "oozie_existing_postgresql_host": "c2n1.c2n1.f5.internal.cloudapp.net",
+                "oozie_pid_dir": "{{ hadoop_pid_dir }}"
+            }
+        },
+        {
+            "hive-site" : {
+                "javax.jdo.option.ConnectionDriverName" : "org.postgresql.Driver",
+                "javax.jdo.option.ConnectionPassword" : "hive",
+                "javax.jdo.option.ConnectionURL" : "jdbc:postgresql://c2n1.c2n1.f5.internal.cloudapp.net:5432/hive",
+                "javax.jdo.option.ConnectionUserName" : "hive"
+            }
+        },
+        {
+            "hive-env" : {
+                "hcat_log_dir" : "{{ hcat_log_dir }}",
+                "hcat_pid_dir" : "{{ hadoop_pid_dir}}",
+                "hive_log_dir" : "{{ hive_log_dir }}",
+                "hive_pid_dir" : "{{ hadoop_pid_dir}}",
+                "hive_database" : "Existing PostgreSQL Database",
+                "hive_database_name" : "hive",
+                "hive_database_type" : "postgres",
+                "hive_existing_postgresql_database" : "PostgreSQL"
+            }
+        }
+  	],
+  "host_groups": [
+    {
+      "name": "node1",
+      "components": [
+        {
+          "name" : "ZOOKEEPER_SERVER"
+        },
+        {
+          "name" : "OOZIE_CLIENT"
+        },
+        {
+          "name" : "HCAT"
+        },
+        {
+          "name" : "NAGIOS_SERVER"
+        },
+        {
+          "name" : "TEZ_CLIENT"
+        },
+        {
+          "name" : "AMBARI_SERVER"
+        },
+        {
+          "name" : "GANGLIA_SERVER"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        },
+        {
+          "name" : "NODEMANAGER"
+        },
+        {
+          "name" : "YARN_CLIENT"
+        },
+        {
+          "name" : "MAPREDUCE2_CLIENT"
+        },
+        {
+          "name" : "DATANODE"
+        },
+        {
+          "name" : "GANGLIA_MONITOR"
+        }
+      ],
+      "cardinality": "1"
+    },
+    {
+      "name": "node2",
+      "components": [
+        {
+          "name" : "ZOOKEEPER_SERVER"
+        },
+        {
+          "name" : "ZOOKEEPER_CLIENT"
+        },
+        {
+          "name" : "PIG"
+        },
+        {
+          "name" : "OOZIE_CLIENT"
+        },
+        {
+          "name" : "HIVE_SERVER"
+        },
+        {
+          "name" : "OOZIE_SERVER"
+        },
+        {
+          "name" : "FALCON_SERVER"
+        },
+        {
+          "name" : "SECONDARY_NAMENODE"
+        },
+        {
+          "name" : "TEZ_CLIENT"
+        },
+        {
+          "name" : "HIVE_METASTORE"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        },
+        {
+          "name" : "NODEMANAGER"
+        },
+        {
+          "name" : "YARN_CLIENT"
+        },
+        {
+          "name" : "MAPREDUCE2_CLIENT"
+        },
+        {
+          "name" : "DATANODE"
+        },
+        {
+          "name" : "MYSQL_SERVER"
+        },
+        {
+          "name" : "GANGLIA_MONITOR"
+        },
+        {
+          "name" : "WEBHCAT_SERVER"
+        }
+      ],
+      "cardinality": "2"
+    },
+    {
+      "name": "node3",
+      "components" : [
+        {
+          "name" : "ZOOKEEPER_SERVER"
+        },
+        {
+          "name" : "ZOOKEEPER_CLIENT"
+        },
+        {
+          "name" : "PIG"
+        },
+        {
+          "name" : "HISTORYSERVER"
+        },
+        {
+          "name" : "OOZIE_CLIENT"
+        },
+        {
+          "name" : "NAMENODE"
+        },
+        {
+          "name" : "HCAT"
+        },
+        {
+          "name" : "FALCON_CLIENT"
+        },
+        {
+          "name" : "TEZ_CLIENT"
+        },
+        {
+          "name" : "APP_TIMELINE_SERVER"
+        },
+        {
+          "name" : "SQOOP"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        },
+        {
+          "name" : "HIVE_CLIENT"
+        },
+        {
+          "name" : "NODEMANAGER"
+        },
+        {
+          "name" : "YARN_CLIENT"
+        },
+        {
+          "name" : "FLUME_HANDLER"
+        },
+        {
+          "name" : "MAPREDUCE2_CLIENT"
+        },
+        {
+          "name" : "DATANODE"
+        },
+        {
+          "name" : "GANGLIA_MONITOR"
+        },
+        {
+          "name" : "RESOURCEMANAGER"
+        }
+      ],
+      "cardinality": "3"
+    }
+  ],
+  "Blueprints": {
+    "blueprint_name": "multi-node-hdfs-yarn",
+    "stack_name": "HDP",
+    "stack_version": "{{ HDP_VERSION }}"
+  }
+}

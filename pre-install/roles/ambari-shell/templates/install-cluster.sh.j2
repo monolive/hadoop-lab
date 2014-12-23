@@ -1,0 +1,14 @@
+#!/bin/bash
+
+AMBARI_HOST={% for host in groups['ambari_server'] %}
+{{ host }}
+{% endfor %}
+
+DEFAULT=/var/lib/ambari-server/resources/scripts/multi-node-hdfs-yarn.json
+
+java -jar /var/lib/ambari-server/resources/scripts/ambari-shell-1.6.0-SNAPSHOT.jar --ambari.host=$AMBARI_HOST << EOF
+blueprint add --file $DEFAULT
+cluster build --blueprint multi-node-hdfs-yarn
+cluster autoAssign
+cluster create --exitOnFinish true
+EOF

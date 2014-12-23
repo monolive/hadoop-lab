@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 #
 #               Network information
@@ -59,3 +60,7 @@ NAGIOS_UID : 1010
 # hcat user
 HCAT_USER : hcat
 HCAT_UID : 1011
+=======
+ntp_server: time.apple.com
+ambari_repo: http://public-repo-1.hortonworks.com/ambari/centos6/1.x/updates/1.7.0/ambari.repo
+>>>>>>> 9172ed34b489dac40b1f6d4df8993b4f4551a167

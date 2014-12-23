@@ -1,8 +1,10 @@
 [ambari_server]
-server1.ctolab.hortonworks.com
+c2n1.c2n1.f5.internal.cloudapp.net
 
 [database_server]
-server1.ctolab.hortonworks.com
+c2n1.c2n1.f5.internal.cloudapp.net
 
 [nodes]
-server[1:9].ctolab.hortonworks.com
+c2n1.c2n1.f5.internal.cloudapp.net
+c2n2.c2n2.f3.internal.cloudapp.net
+c2n3.c2n3.f5.internal.cloudapp.net

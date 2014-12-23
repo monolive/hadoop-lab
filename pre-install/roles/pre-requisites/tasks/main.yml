@@ -2,3 +2,11 @@
 # Install and configure openssl
   - name : update openssl
     yum : name=openssl state=latest
+
+# Create Hadoop Directory structure
+  - name : create directories
+    file : dest={{ dfs_datanode_data_dir }} state=directory
+    file : dest={{ dfs_namenode_checkpoint_dir }} state=directory
+    file : dest={{ dfs_namenode_name_dir }} state=directory
+    file : dest={{ yarn_nodemanager_local_dirs }} state=directory
+    file : dest={{ yarn_nodemanager_log_dirs }} state=directory
