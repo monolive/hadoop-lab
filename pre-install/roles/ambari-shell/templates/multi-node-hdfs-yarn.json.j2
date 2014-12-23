@@ -77,28 +77,16 @@
   ],
   "host_groups": [
     {
-      "name": "master",
+      "name": "operations",
       "components": [
         {
-          "name": "NAMENODE"
-        },
-        {
-          "name": "SECONDARY_NAMENODE"
-        },
-        {
-          "name": "RESOURCEMANAGER"
-        },
-        {
-          "name": "HISTORYSERVER"
+          "name": "AMBARI_SERVER"
         },
         {
           "name": "NAGIOS_SERVER"
         },
         {
           "name": "GANGLIA_SERVER"
-        },
-        {
-          "name": "APP_TIMELINE_SERVER"
         },
         {
           "name": "ZOOKEEPER_SERVER"
@@ -122,13 +110,112 @@
           "name": "YARN_CLIENT"
         },
         {
+          "name": "SQOOP"
+        },
+        {
           "name": "MAPREDUCE2_CLIENT"
         }
       ],
       "cardinality": "1"
     },
     {
-      "name": "slave_1",
+      "name": "master1",
+      "components": [
+        {
+          "name": "NAMENODE"
+        }.
+        {
+          "name": "DATANODE"
+        },
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "GANGLIA_MONITOR"
+        }
+      ],
+      "cardinality": "1"
+    },
+    {
+      "name": "master2",
+      "components": [
+        {
+          "name": "RESOURCEMANAGER"
+        }.
+        {
+          "name": "DATANODE"
+        },
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "GANGLIA_MONITOR"
+        }
+      ],
+      "cardinality": "1"
+    },
+    {
+      "name": "master3",
+      "components": [
+        {
+          "name": "SECONDARY_NAMENODE"
+        }.
+        {
+          "name": "DATANODE"
+        },
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "GANGLIA_MONITOR"
+        }
+      ],
+      "cardinality": "1"
+    },
+    {
+      "name": "master4",
+      "components": [
+        {
+          "name": "OOZIE_SERVER"
+        }.
+        {
+          "name": "FALCON_SERVER"
+        },
+        {
+          "name": "DATANODE"
+        },
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "GANGLIA_MONITOR"
+        }
+      ],
+      "cardinality": "1"
+    },
+    {
+      "name": "master5",
+      "components": [
+        {
+          "name": "HIVE_SERVER"
+        }.
+        {
+          "name": "WEBHCAT_SERVER"
+        },
+        {
+          "name": "DATANODE"
+        },
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "GANGLIA_MONITOR"
+        }
+      ],
+      "cardinality": "1"
+    },
+    {
+      "name": "slave",
       "components": [
         {
           "name": "DATANODE"
@@ -137,14 +224,11 @@
           "name": "NODEMANAGER"
         },
         {
-          "name": "SQOOP"
-        },
-        {
           "name": "GANGLIA_MONITOR"
         }
       ],
-      "cardinality": "2"
-    }
+      "cardinality": "1"
+    },
   ],
   "Blueprints": {
     "blueprint_name": "multi-node-hdfs-yarn",
