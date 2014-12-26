@@ -1,7 +1,7 @@
 ---
 # Install and configure openssl
-  - name : update openssl
-    yum : name={{ items }} state=latest
+  - name : Install dependencies
+    yum : name={{ item }} state=latest
     with_items:
       - openssl
       - postgresql-jdbc
