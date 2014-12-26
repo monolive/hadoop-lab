@@ -55,11 +55,11 @@
         {
             "hive-site" : {
                 "javax.jdo.option.ConnectionDriverName" : "org.postgresql.Driver",
-                "javax.jdo.option.ConnectionPassword" : "hive",
+                "javax.jdo.option.ConnectionPassword" : "{{ hive_password }}",
                 {% for host in groups['database_server'] %}
                 "javax.jdo.option.ConnectionURL" : "jdbc:postgresql://{{ hostvars[host]['ansible_fqdn'] }}:5432/hive",
                 {% endfor %}
-                "javax.jdo.option.ConnectionUserName" : "hive"
+                "javax.jdo.option.ConnectionUserName" : "{{ hive_username }}"
             }
         },
         {
