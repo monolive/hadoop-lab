@@ -1,7 +1,10 @@
 ---
 # Install and configure openssl
   - name : update openssl
-    yum : name=openssl state=latest
+    yum : name={{ items }} state=latest
+    with_items:
+      - openssl
+      - postgresql-jdbc
 
 # Create Hadoop Directory structure
   - name : create directories
