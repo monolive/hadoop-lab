@@ -21,7 +21,7 @@
 
   - name: Configure JDBC for ambari
     command: /usr/sbin/ambari-server setup --jdbc-db=postgres --jdbc-driver=/usr/share/java/postgresql-jdbc.jar 
-    when: hadoop_database == "postgresql" and postgresql_jdbc|changed
+    when: postgresql_jdbc|changed
     async: 15
     poll: 5
 
