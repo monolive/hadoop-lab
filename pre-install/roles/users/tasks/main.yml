@@ -1,6 +1,6 @@
 --- 
    # name add hadoop group
-   - group: name={{ HADOOP_GROUP }} gid={{ HADOOP_GID }} state=present shell=/sbin/nologin
+   - group: name={{ HADOOP_GROUP }} gid={{ HADOOP_GID }} state=present
    
    # name add hdfs user
    - user: name={{ HDFS_USER }} uid={{ HDFS_UID }} group=hadoop state=present shell=/sbin/nologin
