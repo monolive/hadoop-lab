@@ -9,7 +9,7 @@
     - ntp
     - pre-requisites
     - users
-    - ambari-agent
+#    - ambari-agent
 
 - hosts: database_server
 #  user: azureuser
@@ -17,11 +17,11 @@
   roles:
     - db-hadoop
 
-- hosts: ambari_server
+# hosts: ambari_server
 #  user: azureuser
 #  sudo: yes
-  vars_files:
-    - vars/hdp_info
-  roles:
-    - ambari-server
-    - ambari-shell
+# vars_files:
+#   - vars/hdp_info
+# roles:
+#   - ambari-server
+#   - ambari-shell
