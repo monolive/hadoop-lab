@@ -9,7 +9,7 @@
     shell: setenforce 0 
   - name: copy epel.repo
     copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
-  - name: isntall ansible
+  - name: install ansible
     yum: name=ansible state=present
-  - name: isntall git
+  - name: install git
     yum: name=git state=present
