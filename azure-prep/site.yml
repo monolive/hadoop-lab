@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  user: azureuser
+  user: orenault
   sudo: yes
   roles:
     - prep

@@ -1,7 +1,9 @@
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
-
-10.0.2.12 c2n1.c2n1.f5.internal.cloudapp.net c2n1
-10.0.2.13 c2n2.c2n2.f3.internal.cloudapp.net c2n2
-10.0.2.14 c2n3.c2n3.f5.internal.cloudapp.net c2n3
+192.168.0.14 wandisco04.wandisco04.f1.internal.cloudapp.net wandisco04 
+192.168.0.13 wandisco03.wandisco03.f1.internal.cloudapp.net wandisco03 
+192.168.0.15 wandisco05.wandisco05.f4.internal.cloudapp.net wandisco05
+192.168.0.12 wandisco02.wandisco02.f7.internal.cloudapp.net wandisco02
+192.168.0.11 wandisco01.wandisco01.f7.internal.cloudapp.net wandisco01
+192.168.0.16 wandisco06.wandisco06.f8.internal.cloudapp.net wandisco06
