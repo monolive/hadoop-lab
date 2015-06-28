@@ -4,12 +4,10 @@
   - name: copy hosts
     copy: src=hosts dest=/etc/hosts
   - name: switch off selinux
-    shell: setenforce 0 
-  - name: switch off selinux
-    shell: setenforce 0 
-  - name: copy epel.repo
-    copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
-  - name: install ansible
-    yum: name=ansible state=present
-  - name: install git
-    yum: name=git state=present
+    lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=disabled
+  - name: switch off iptables
+    service: name=iptables state=stopped enabled=off
+  - name: install java
+    yum: name=java-1.7.0-openjdk state=present
+  - name: configure java
+    copy: src=java.sh dest=/etc/profile.d/java.sh
