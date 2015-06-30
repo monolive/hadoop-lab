@@ -1,0 +1,8 @@
+---
+  - name: install kdc
+    yum: name={{ item }} state=present
+    with_items:
+      - krb5-libs
+
+  - name: copy krb5.conf
+    template: src=krb5.conf.j2 dest=/etc/krb5.conf mode=0644 owner=root group=root

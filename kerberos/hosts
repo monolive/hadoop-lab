@@ -1,0 +1,10 @@
+[all]
+wandisco01.cloudapp.net
+wandisco02.cloudapp.net
+wandisco03.cloudapp.net
+wandisco04.cloudapp.net
+wandisco05.cloudapp.net
+wandisco06.cloudapp.net
+
+[kdc]
+wandisco01.cloudapp.net

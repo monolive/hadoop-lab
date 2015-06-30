@@ -1,0 +1,6 @@
+
+REALM: KRB.HDP
+domain: internal.cloudapp.net
+admin_user: admin
+password: hadoop
+

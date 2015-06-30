@@ -1,0 +1,12 @@
+---
+- hosts: all
+  user: orenault
+  sudo: yes
+  roles:
+    - krb-client
+
+- hosts: kdc
+  user: orenault
+  sudo: yes
+  roles:
+    - kdc

@@ -1,0 +1,24 @@
+---
+  - name: install kdc
+    yum: name={{ item }} state=present
+    with_items:
+      - krb5-server
+      - krb5-libs
+
+  - name: copy kdc.conf
+    template: src=kdc.conf.j2 dest=/var/kerberos/krb5kdc/kdc.conf.j2 mode=0600 owner=root group=root
+
+  - name: copy kadm5.acl
+    template: src=kadm5.acl.j2 dest=/var/kerberos/krb5kdc/kadm5.acl.j2 mode=0600 owner=root group=root
+
+  - name: initialise kdc
+    shell: /usr/sbin/kdb5_util create -s -P {{ password }}
+
+  - name: create admin user
+    shell: /usr/sbin/kadmin.local -q "addprinc -pw {{ password }} {{ admin_user }}/admin"
+
+  - name: start services
+    service: name={{ item }} state=started enabled=yes
+    with_items: 
+      - krb5kdc
+      - kadmin
