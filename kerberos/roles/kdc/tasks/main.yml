@@ -11,8 +11,13 @@
   - name: copy kadm5.acl
     template: src=kadm5.acl.j2 dest=/var/kerberos/krb5kdc/kadm5.acl.j2 mode=0600 owner=root group=root
 
+  - name: Check if kdc already configured
+    stat: path=/var/kerberos/krb5kdc/principal
+    register: kdc_config
+
   - name: initialise kdc
     shell: /usr/sbin/kdb5_util create -s -P {{ password }}
+    when: kdc_config|changed
 
   - name: create admin user
     shell: /usr/sbin/kadmin.local -q "addprinc -pw {{ password }} {{ admin_user }}/admin"
@@ -22,3 +27,129 @@
     with_items: 
       - krb5kdc
       - kadmin
+
+  - name: copy keytab file
+    copy: src={{ keytab_file }} dest=/var/kerberos/krb5kdc/host-principal.csv
+
+# Don't do it for headless keytab ( otherwise each node will have a different kvno in each keytab )
+  - name: read servername from file
+    shell: /bin/awk -F"," '!/headless/ {print $1}' /var/kerberos/krb5kdc/host-principal.csv 
+    register: servername
+
+  - name: read principal from file
+    shell: /bin/awk -F"," '!/headless/ {print $3}' /var/kerberos/krb5kdc/host-principal.csv
+    register: principal
+
+  - name: read keytab from file
+    shell: /bin/awk -F"," '!/headless/ {print $4}' /var/kerberos/krb5kdc/host-principal.csv
+    register: keytab
+
+  - name: read user from file
+    shell: /bin/awk -F"," '!/headless/ {print $6}' /var/kerberos/krb5kdc/host-principal.csv
+    register: user
+
+  - name: read group from file
+    shell: /bin/awk -F"," '!/headless/ {print $7}' /var/kerberos/krb5kdc/host-principal.csv
+    register: group
+
+  - name: read permission from file
+    shell: /bin/awk -F"," '!/headless/ {print $8}' /var/kerberos/krb5kdc/host-principal.csv
+    register: mode
+
+  - name: create folder
+    file: path=/tmp/krb/{{ item.0 }} state=directory
+    with_together:
+      - "{{ servername.stdout_lines }}"
+
+  - name: check if keytab already created
+    stat: path=/tmp/krb/{{ item.0 }}/{{ item.1 }}
+    register:  keytab_check
+    with_together:
+      - "{{ servername.stdout_lines }}"
+      - "{{ keytab.stdout_lines }}"
+
+  - debug: var=keytab_check
+
+  - name: create principal
+    shell: /usr/sbin/kadmin.local -q "addprinc -randkey {{ item.0 }}"
+    when: item.1.stat.exists == false
+    with_together:
+      - "{{ principal.stdout_lines }}"
+      - "{{ keytab_check.results }}"
+
+  - name: save principal in keytab
+    shell: /usr/sbin/kadmin.local -q "xst -k /tmp/krb/{{ item.0 }}/{{ item.2 }} {{ item.1 }}"
+    when: item.3.stat.exists == false
+    with_together:
+      - "{{ servername.stdout_lines }}"
+      - "{{ principal.stdout_lines }}"
+      - "{{ keytab.stdout_lines }}"
+      - "{{ keytab_check.results }}"
+
+  - name: set correct owner / permission to keytabs
+    file: path=/tmp/krb/{{ item.0 }}/{{ item.1 }} owner={{ item.2 }} group={{ item.3 }} mode={{ item.4 }}
+    when: item.5.stat.exists == false
+    with_together:
+      - "{{ servername.stdout_lines }}"
+      - "{{ keytab.stdout_lines }}"
+      - "{{ user.stdout_lines }}"
+      - "{{ group.stdout_lines }}"
+      - "{{ mode.stdout_lines }}"
+      - "{{ keytab_check.results }}"
+
+# Do it for headless keytab
+  - name: read principal from file
+    shell: /bin/awk -F"," '/headless/ {print $3}' /var/kerberos/krb5kdc/host-principal.csv | sort -u
+    register: principal_headless
+
+  - name: read keytab from file
+    shell: /bin/awk -F"," '/headless/ {print $4}' /var/kerberos/krb5kdc/host-principal.csv | sort -u
+    register: keytab_headless
+
+  - name: read user from file
+    shell: /bin/awk -F"," '/headless/ {print $6}' /var/kerberos/krb5kdc/host-principal.csv | sort -u
+    register: user_headless
+
+  - name: read group from file
+    shell: /bin/awk -F"," '/headless/ {print $7}' /var/kerberos/krb5kdc/host-principal.csv | sort -u
+    register: group_headless
+
+  - name: read permission from file
+    shell: /bin/awk -F"," '/headless/ {print $8}' /var/kerberos/krb5kdc/host-principal.csv | sort -u
+    register: mode_headless
+
+  - name: create headless folder
+    file: path=/tmp/krb/headless state=directory
+
+  - name: check if headless keytab already created
+    stat: path=/tmp/krb/headless/{{ item.0 }}
+    register:  keytab_headless_check
+    with_together:
+      - "{{ keytab_headless.stdout_lines }}"
+
+  - name: create principal
+    shell: /usr/sbin/kadmin.local -q "addprinc -randkey {{ item.0 }}"
+    when: item.1.stat.exists == false
+    with_together:
+      - "{{ principal_headless.stdout_lines }}"
+      - "{{ keytab_headless_check.results }}"
+
+  - name: save principal in keytab
+    shell: /usr/sbin/kadmin.local -q "xst -k /tmp/krb/headless/{{ item.1 }} {{ item.0 }}"
+    when: item.2.stat.exists == false
+    with_together:
+      - "{{ principal_headless.stdout_lines }}"
+      - "{{ keytab_headless.stdout_lines }}"
+      - "{{ keytab_headless_check.results }}"
+
+  - name: set correct owner / permission to keytabs
+    file: path=/tmp/krb/headless/{{ item.0 }} owner={{ item.1 }} group={{ item.2 }} mode={{ item.3 }}
+    when: item.4.stat.exists == false
+    with_together:
+      - "{{ keytab_headless.stdout_lines }}"
+      - "{{ user_headless.stdout_lines }}"
+      - "{{ group_headless.stdout_lines }}"
+      - "{{ mode_headless.stdout_lines }}"
+      - "{{ keytab_headless_check.results }}"
+
+  #- name: recuperate keytabs

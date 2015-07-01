@@ -3,4 +3,4 @@ REALM: KRB.HDP
 domain: internal.cloudapp.net
 admin_user: admin
 password: hadoop
-
+keytab_file: /Users/orenault/Developments/host-principal-keytab-list.csv
