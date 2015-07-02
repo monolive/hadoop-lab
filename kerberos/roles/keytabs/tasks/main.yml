@@ -1,0 +1,9 @@
+---
+  - name: create keytabs folders
+    file: path=/etc/security/keytabs state=directory mode=0750 owner=root group=hadoop
+
+  - name: copy keytab tar files
+    copy: src={{ ansible_fqdn }}.tar dest=/tmp/keytab.tar
+
+  - name: untar files
+    shell: tar xf /tmp/keytab.tar --strip-components=3 -C /etc/security/keytabs

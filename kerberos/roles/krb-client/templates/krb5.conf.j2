@@ -12,7 +12,7 @@
  forwardable = true
 
 [realms]
- EXAMPLE.COM = {
+ {{ REALM }} = {
   kdc = {{ hostvars[groups['kdc'][0]]['ansible_fqdn'] }}
   admin_server = {{ hostvars[groups['kdc'][0]]['ansible_fqdn'] }}
  }

@@ -1,5 +1,5 @@
 ---
-  - name: install kdc
+  - name: install krb5
     yum: name={{ item }} state=present
     with_items:
       - krb5-libs
