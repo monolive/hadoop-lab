@@ -94,12 +94,12 @@
     when: ambari_version == 2
 
   - name: create folder
-    file: path=/tmp/krb/{{ item.0 }} state=directory
+    file: path=/var/kerberos/{{ item.0 }} state=directory
     with_together:
       - "{{ servername.stdout_lines }}"
 
   - name: check if keytab already created
-    stat: path=/tmp/krb/{{ item.0 }}/{{ item.1 }}
+    stat: path=/var/kerberos/{{ item.0 }}/{{ item.1 }}
     register:  keytab_check
     with_together:
       - "{{ servername.stdout_lines }}"
@@ -115,7 +115,7 @@
       - "{{ keytab_check.results }}"
 
   - name: save principal in keytab
-    shell: /usr/sbin/kadmin.local -q "xst -k /tmp/krb/{{ item.0 }}/{{ item.2 }} {{ item.1 }}"
+    shell: /usr/sbin/kadmin.local -q "xst -k /var/kerberos/{{ item.0 }}/{{ item.2 }} {{ item.1 }}"
     when: item.3.stat.exists == false
     with_together:
       - "{{ servername.stdout_lines }}"
@@ -124,7 +124,7 @@
       - "{{ keytab_check.results }}"
 
   - name: set correct owner / permission to keytabs
-    file: path=/tmp/krb/{{ item.0 }}/{{ item.1 }} owner={{ item.2 }} group={{ item.3 }} mode={{ item.4 }}
+    file: path=/var/kerberos/{{ item.0 }}/{{ item.1 }} owner={{ item.2 }} group={{ item.3 }} mode={{ item.4 }}
     when: item.5.stat.exists == false
     with_together:
       - "{{ servername.stdout_lines }}"
@@ -187,10 +187,10 @@
     when: ambari_version == 2
 
   - name: create headless folder
-    file: path=/tmp/krb/headless state=directory
+    file: path=/var/kerberos/headless state=directory
 
   - name: check if headless keytab already created
-    stat: path=/tmp/krb/headless/{{ item.0 }}
+    stat: path=/var/kerberos/headless/{{ item.0 }}
     register:  keytab_headless_check
     with_together:
       - "{{ keytab_headless.stdout_lines }}"
@@ -203,7 +203,7 @@
       - "{{ keytab_headless_check.results }}"
 
   - name: save principal in keytab 
-    shell: /usr/sbin/kadmin.local -q "xst -k /tmp/krb/headless/{{ item.1 }} {{ item.0 }}"
+    shell: /usr/sbin/kadmin.local -q "xst -k /var/kerberos/headless/{{ item.1 }} {{ item.0 }}"
     when: item.2.stat.exists == false
     with_together:
       - "{{ principal_headless.stdout_lines }}"
@@ -216,7 +216,7 @@
 #  - debug: var=group
 
   - name: set correct owner / permission to keytabs
-    file: path=/tmp/krb/headless/{{ item.0 }} owner={{ item.1 }} group={{ item.2 }} mode={{ item.3 }}
+    file: path=/var/kerberos/headless/{{ item.0 }} owner={{ item.1 }} group={{ item.2 }} mode={{ item.3 }}
     when: item.4.stat.exists == false
     with_together:
       - "{{ keytab_headless.stdout_lines }}"
@@ -226,12 +226,12 @@
       - "{{ keytab_headless_check.results }}"
 
   - name: generate tar file from keytab
-    shell: tar zcvf /tmp/krb/{{ item.0 }}.tar /tmp/krb/{{ item.0 }}/* /tmp/krb/headless/*
+    shell: tar zcvf /var/kerberos/{{ item.0 }}.tar /var/kerberos/{{ item.0 }}/* /var/kerberos/headless/*
     with_together:
       - "{{ servername.stdout_lines }}"
 
   - name: fetch file
-    fetch: src=/tmp/krb/{{ item.0 }}.tar dest=roles/keytabs/files/ flat=yes
+    fetch: src=/var/kerberos/{{ item.0 }}.tar dest=roles/keytabs/files/ flat=yes
     with_together:
       - "{{ servername.stdout_lines }}"
 
