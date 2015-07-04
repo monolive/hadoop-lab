@@ -15,6 +15,8 @@
     stat: path=/var/kerberos/krb5kdc/principal
     register: kdc_config
 
+  - debug: var=kdc_config
+
   - name: initialise kdc
     shell: /usr/sbin/kdb5_util create -s -P {{ password }}
     when: kdc_config.stat.exists == false
@@ -31,38 +33,6 @@
   - name: copy keytab file
     copy: src={{ keytab_file }} dest=/var/kerberos/krb5kdc/host-principal.csv
 
-# Don't do it for headless keytab ( otherwise each node will have a different kvno in each keytab )
-  - name: read servername from file
-    shell: /bin/awk -F"," '!/headless/ {print $1}' /var/kerberos/krb5kdc/host-principal.csv 
-    register: servername
-    when: ambari_version == 1
-
-  - name: read principal from file
-    shell: /bin/awk -F"," '!/headless/  {print $3}' /var/kerberos/krb5kdc/host-principal.csv
-    register: principal
-    when: ambari_version == 1
-
-  - name: read keytab from file
-    shell: /bin/awk -F"," '!/headless/  {print $4}' /var/kerberos/krb5kdc/host-principal.csv
-    register: keytab
-    when: ambari_version == 1
-
-  - name: read user from file
-    shell: /bin/awk -F"," '!/headless/  {print $6}' /var/kerberos/krb5kdc/host-principal.csv
-    register: user
-    when: ambari_version == 1
-
-  - name: read group from file
-    shell: /bin/awk -F"," '!/headless/  {print $7}' /var/kerberos/krb5kdc/host-principal.csv
-    register: group
-    when: ambari_version == 1
-
-  - name: read permission from file
-    shell: /bin/awk -F"," '!/headless/  {print $8}' /var/kerberos/krb5kdc/host-principal.csv
-    register: mode
-    when: ambari_version == 1
-
-# Don't do it for headless keytab ( otherwise each node will have a different kvno in each keytab )
   - name: read servername from file
     shell: /bin/awk -F"," '/SERVICE/ {print $1}' /var/kerberos/krb5kdc/host-principal.csv 
     register: servername
@@ -93,13 +63,43 @@
     register: mode
     when: ambari_version == 2
 
+  - name: read servername from file - ambari 1 
+    shell: /bin/awk -F"," '!/headless/ {print $1}' /var/kerberos/krb5kdc/host-principal.csv 
+    register: servername
+    when: ambari_version == 1
+
+  - name: read principal from file - ambari 1 
+    shell: /bin/awk -F"," '!/headless/  {print $3}' /var/kerberos/krb5kdc/host-principal.csv
+    register: principal
+    when: ambari_version == 1
+
+  - name: read keytab from file - ambari 1 
+    shell: /bin/awk -F"," '!/headless/  {print $4}' /var/kerberos/krb5kdc/host-principal.csv
+    register: keytab
+    when: ambari_version == 1
+
+  - name: read user from file - ambari 1 
+    shell: /bin/awk -F"," '!/headless/  {print $6}' /var/kerberos/krb5kdc/host-principal.csv
+    register: user
+    when: ambari_version == 1
+
+  - name: read group from file - ambari 1 
+    shell: /bin/awk -F"," '!/headless/  {print $7}' /var/kerberos/krb5kdc/host-principal.csv
+    register: group
+    when: ambari_version == 1
+
+  - name: read permission from file - ambari 1 
+    shell: /bin/awk -F"," '!/headless/  {print $8}' /var/kerberos/krb5kdc/host-principal.csv
+    register: mode
+    when: ambari_version == 1
+
   - name: create folder
-    file: path=/var/kerberos/{{ item.0 }} state=directory
+    file: path=/tmp/krb/{{ item.0 }} state=directory
     with_together:
       - "{{ servername.stdout_lines }}"
 
   - name: check if keytab already created
-    stat: path=/var/kerberos/{{ item.0 }}/{{ item.1 }}
+    stat: path=/tmp/krb/{{ item.0 }}/{{ item.1 }}
     register:  keytab_check
     with_together:
       - "{{ servername.stdout_lines }}"
@@ -115,7 +115,7 @@
       - "{{ keytab_check.results }}"
 
   - name: save principal in keytab
-    shell: /usr/sbin/kadmin.local -q "xst -k /var/kerberos/{{ item.0 }}/{{ item.2 }} {{ item.1 }}"
+    shell: /usr/sbin/kadmin.local -q "xst -k /tmp/krb/{{ item.0 }}/{{ item.2 }} {{ item.1 }}"
     when: item.3.stat.exists == false
     with_together:
       - "{{ servername.stdout_lines }}"
@@ -124,7 +124,7 @@
       - "{{ keytab_check.results }}"
 
   - name: set correct owner / permission to keytabs
-    file: path=/var/kerberos/{{ item.0 }}/{{ item.1 }} owner={{ item.2 }} group={{ item.3 }} mode={{ item.4 }}
+    file: path=/tmp/krb/{{ item.0 }}/{{ item.1 }} owner={{ item.2 }} group={{ item.3 }} mode={{ item.4 }}
     when: item.5.stat.exists == false
     with_together:
       - "{{ servername.stdout_lines }}"
@@ -133,30 +133,29 @@
       - "{{ group.stdout_lines }}"
       - "{{ mode.stdout_lines }}"
       - "{{ keytab_check.results }}"
-
 # Do it for headless keytab - ambari 1
-  - name: read principal from file headless
-    shell: /bin/awk -F"," '/headless/ {print $3,$4,$6,$7,$8} /var/kerberos/krb5kdc/host-principal.csv | sort -u | /bin/awk '{print $1}' 
+  - name: read principal from file headless - ambari 1 
+    shell: /bin/awk -F "," '/headless/ {print $3,$4,$6,$7,$8}' /var/kerberos/krb5kdc/host-principal.csv | sort -u | /bin/awk '{print $1}'
     register: principal_headless
     when: ambari_version == 1
 
-  - name: read keytab from file headless
-    shell: /bin/awk -F"," '/headless/ {print $4}' /var/kerberos/krb5kdc/host-principal.csv | sort -u
+  - name: read keytab from file headless - ambari 1 
+    shell: /bin/awk -F "," '/headless/ {print $3,$4,$6,$7,$8}' /var/kerberos/krb5kdc/host-principal.csv | sort -u | /bin/awk '{print $2}'
     register: keytab_headless
     when: ambari_version == 1
 
-  - name: read user from file headless
-    shell: /bin/awk -F"," '/headless/ {print $6}' /var/kerberos/krb5kdc/host-principal.csv | sort -u
+  - name: read user from file headless - ambari 1 
+    shell: /bin/awk -F "," '/headless/ {print $3,$4,$6,$7,$8}' /var/kerberos/krb5kdc/host-principal.csv | sort -u | /bin/awk '{print $3}' 
     register: user_headless
     when: ambari_version == 1
 
-  - name: read group from file headless
-    shell: /bin/awk -F"," '/headless/ {print $7}' /var/kerberos/krb5kdc/host-principal.csv | sort -u
+  - name: read group from file headless - ambari 1 
+    shell: /bin/awk -F "," '/headless/ {print $3,$4,$6,$7,$8}' /var/kerberos/krb5kdc/host-principal.csv | sort -u | /bin/awk '{print $4}'
     register: group_headless
     when: ambari_version == 1
 
-  - name: read permission from file headless
-    shell: /bin/awk -F"," '/headless/ {print $8}' /var/kerberos/krb5kdc/host-principal.csv | sort -u
+  - name: read permission from file headless - ambari 1 
+    shell: /bin/awk -F "," '/headless/ {print $3,$4,$6,$7,$8}' /var/kerberos/krb5kdc/host-principal.csv | sort -u | /bin/awk '{print $5}'
     register: mode_headless
     when: ambari_version == 1
 
@@ -187,36 +186,36 @@
     when: ambari_version == 2
 
   - name: create headless folder
-    file: path=/var/kerberos/headless state=directory
+    file: path=/tmp/krb/headless state=directory
 
   - name: check if headless keytab already created
-    stat: path=/var/kerberos/headless/{{ item.0 }}
+    stat: path=/tmp/krb/headless/{{ item.0 }}
     register:  keytab_headless_check
     with_together:
       - "{{ keytab_headless.stdout_lines }}"
 
-  - name: create principal 
+  - name: create principal
     shell: /usr/sbin/kadmin.local -q "addprinc -randkey {{ item.0 }}"
     when: item.1.stat.exists == false
     with_together:
       - "{{ principal_headless.stdout_lines }}"
       - "{{ keytab_headless_check.results }}"
 
-  - name: save principal in keytab 
-    shell: /usr/sbin/kadmin.local -q "xst -k /var/kerberos/headless/{{ item.1 }} {{ item.0 }}"
+  - name: save principal in keytab
+    shell: /usr/sbin/kadmin.local -q "xst -k /tmp/krb/headless/{{ item.1 }} {{ item.0 }}"
     when: item.2.stat.exists == false
     with_together:
       - "{{ principal_headless.stdout_lines }}"
       - "{{ keytab_headless.stdout_lines }}"
       - "{{ keytab_headless_check.results }}"
 
-#  - debug: var=keytab_headless_check
-#  - debug: var=principal_headless
-#  - debug: var=owner
-#  - debug: var=group
+  - debug: var=keytab_headless_check
+  - debug: var=principal_headless
+  - debug: var=owner
+  - debug: var=group
 
   - name: set correct owner / permission to keytabs
-    file: path=/var/kerberos/headless/{{ item.0 }} owner={{ item.1 }} group={{ item.2 }} mode={{ item.3 }}
+    file: path=/tmp/krb/headless/{{ item.0 }} owner={{ item.1 }} group={{ item.2 }} mode={{ item.3 }}
     when: item.4.stat.exists == false
     with_together:
       - "{{ keytab_headless.stdout_lines }}"
@@ -226,12 +225,11 @@
       - "{{ keytab_headless_check.results }}"
 
   - name: generate tar file from keytab
-    shell: tar zcvf /var/kerberos/{{ item.0 }}.tar /var/kerberos/{{ item.0 }}/* /var/kerberos/headless/*
+    shell: tar zcvf /tmp/krb/{{ item.0 }}.tar /tmp/krb/{{ item.0 }}/* /tmp/krb/headless/*
     with_together:
       - "{{ servername.stdout_lines }}"
 
   - name: fetch file
-    fetch: src=/var/kerberos/{{ item.0 }}.tar dest=roles/keytabs/files/ flat=yes
+    fetch: src=/tmp/krb/{{ item.0 }}.tar dest=roles/keytabs/files/ flat=yes
     with_together:
       - "{{ servername.stdout_lines }}"
-

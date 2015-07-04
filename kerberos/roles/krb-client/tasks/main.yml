@@ -6,6 +6,3 @@
 
   - name: copy krb5.conf
     template: src=krb5.conf.j2 dest=/etc/krb5.conf mode=0644 owner=root group=root
-
-  - name: create folders
-    file: path=/etc/security/keytabs state=directory mode=0750 owner=root group=hadoop
