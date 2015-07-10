@@ -1,0 +1,11 @@
+---
+  - name: install cgroup library
+    yum: name=libcgroup state=present
+
+  - name: create cgroup folder
+    file: dest=/cgroup type=folder
+
+  - name: Configure cgroup
+    copy: src=cgconfig.conf dest=/etc/cgconfig.conf mode=0644 owner=root group=root
+
+#  - name: 
